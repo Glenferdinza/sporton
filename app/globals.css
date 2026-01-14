@@ -1,0 +1,27 @@
+@import "tailwindcss";
+
+:root {
+  --dark: #111111;
+  --dark-alternate: #1B1918;
+  --primary: #FF5F3F;
+  --primary-light: #F4EBEB;
+}
+
+@theme inline {
+  --color-dark: var(--dark);
+  --color-dark-alternate: var(--dark-alternate);
+  --color-primary: var(--primary);
+  --color-primary-light: var(--primary-light);
+  --font-family-poppins: var(--font-poppins);
+
+}
+
+html{
+  overflow-x:hidden;
+}
+
+
+/* Memaksa seluruh page website menggunakan font poppins */
+body {
+  @apply font-family-poppins;
+}
