@@ -5,7 +5,6 @@ import Header from "./components/layouts/header";
 import Footer from "./components/layouts/footer";
 
 const poppins = Poppins({
-  subsets: ["latin"],
   variable: "--font-poppins",
   display: "swap",
   weight: ["400", "500", "600", "700", "800"],
@@ -23,7 +22,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={`${poppins.variable} antialiased`}>
         <Header />
         {children}
