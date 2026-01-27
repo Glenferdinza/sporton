@@ -2,18 +2,38 @@
 
 import TransactionTable from "../../components/transactions/transaction-table";
 import TransactiontModal from "../../components/transactions/transaction-modal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Transaction } from "@/app/types";
+import { getAllTransactions } from "@/app/services/transaction.service";
 
 const TransactionManagement = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [selectedTransaction, setSelectedTransaction] =
+    useState<Transaction | null>(null);
+
+  const fetchTransactions = async () => {
+    try {
+      const data = await getAllTransactions();
+      setTransactions(data);
+    } catch (error) {
+      console.error("Failed to fetch transactions", error);
+    }
+  };
 
   const handleCloseModal = () => {
-    setIsOpen(false);
+    setIsModalOpen(false);
+    setSelectedTransaction(null);
   };
 
-  const handleViewDetails = () => {
-    setIsOpen(true);
+  const handleViewDetails = (transaction: Transaction) => {
+    setSelectedTransaction(transaction);
+    setIsModalOpen(true);
   };
+
+  useEffect(() => {
+    fetchTransactions();
+  }, []);
 
   return (
     <div>
@@ -25,8 +45,16 @@ const TransactionManagement = () => {
           </p>
         </div>
       </div>
-      <TransactionTable onViewDetails={handleViewDetails} />
-      <TransactiontModal isOpen={isOpen} onClose={handleCloseModal} />
+      <TransactionTable
+        transactions={transactions}
+        onViewDetails={handleViewDetails}
+      />
+      <TransactiontModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        onSuccess={fetchTransactions}
+        transaction={selectedTransaction}
+      />
     </div>
   );
 };

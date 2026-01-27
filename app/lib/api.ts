@@ -24,5 +24,13 @@ export async function fetchAPI<T>(
 
 export function getImageUrl(path: string) {
   if (path.startsWith("http")) return path;
+  if (path.startsWith("/")) return `${process.env.NEXT_PUBLIC_API_ROOT}${path}`;
   return `${process.env.NEXT_PUBLIC_API_ROOT}/${path}`;
+}
+
+export function getAuthHeaders() {
+  const token = localStorage.getItem("token");
+  return {
+    Authorization: `Bearer ${token}`,
+  };
 }
